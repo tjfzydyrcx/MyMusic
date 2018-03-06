@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">我的音乐</string>
+    <string name="duration">播放时长:</string>
+    <string name="play_list">播放列表</string>
+    <string name="no_song">没有音乐</string>
+    <string name="play">多选添加</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+</resources>

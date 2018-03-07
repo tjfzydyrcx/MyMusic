@@ -309,6 +309,10 @@ public class MusicService extends Service {
 
     }
 
+    /**
+     * 歌曲的准备
+     * @param item
+     */
     private void prepareToPlay(Music item) {
 
         try {
@@ -320,7 +324,11 @@ public class MusicService extends Service {
         }
     }
 
-
+    /**
+     * 歌曲的播放及更新到桌面小控件
+     * @param item
+     * @param reload
+     */
     private void playMusicItem(Music item, boolean reload) {
         if (item == null) {
             return;
@@ -343,7 +351,9 @@ public class MusicService extends Service {
 
     }
 
-    //
+    /**
+     * 下一首
+     */
     public void playNextInner() {
 
         int currentIndex = mPlayList.indexOf(mCurrentMusicItem);

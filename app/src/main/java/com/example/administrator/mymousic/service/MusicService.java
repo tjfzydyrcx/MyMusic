@@ -14,6 +14,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -23,10 +24,12 @@ import com.example.administrator.mymousic.Util.Utils;
 
 import com.example.administrator.mymousic.db.PlayListContentProvider;
 import com.example.administrator.mymousic.listener.OnStateChangeListenr;
+import com.example.administrator.mymousic.sensor.ShakeListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.example.administrator.mymousic.widget.MusicAppWidget.performUpdates;
 
@@ -89,6 +92,9 @@ public class MusicService extends Service {
         }
     });
 
+    private ShakeListener mShakeListener;
+    private Vibrator vibrator;
+
 
     @Override
     public void onCreate() {
@@ -105,11 +111,38 @@ public class MusicService extends Service {
         registerReceiver(mIntentReceiver, commandFilter);
         mPaused = false;
         mMusicPlayer.setOnCompletionListener(mOnCompletionListener);
+        vibrator = (Vibrator) getBaseContext().getSystemService(Context.VIBRATOR_SERVICE);
+        mShakeListener = new ShakeListener(getBaseContext());
+        mShakeListener.setOnShakeListener(new ShakeListener.OnShakeListener() {
+
+            @Override
+            public void onShake() {
+                // TODO Auto-generated method stub
+                mShakeListener.stop();
+                startVibrator();
+                //vibrator.cancel();
+                mShakeListener.start();
+            }
+        });
+
+    }
+
+    //震动函数
+    void startVibrator() {
+        vibrator.vibrate(500);
+        random_a_song();
+    }
+
+    private void random_a_song() {
+        Random rand = new Random();
+        int i = rand.nextInt(mPlayList.size());
+        mCurrentMusicItem = mPlayList.get(i);
+        playMusicItem(mCurrentMusicItem, true);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        mShakeListener.start();
         if (intent != null) {
             String action = intent.getAction();
             if (action != null) {
@@ -138,7 +171,7 @@ public class MusicService extends Service {
                 ContentResolver res = getContentResolver();
                 item.thumb = Utils.createThumbFromUir(res, item.albumUri);
             }
-            Log.e("widget","更新"+item.toString());
+            Log.e("widget", "更新" + item.toString());
             //调用App widget提供的更新接口开始更新
             performUpdates(MusicService.this, item.name, isPlayingInner(), item.thumb);
         }
@@ -426,5 +459,6 @@ public class MusicService extends Service {
         mHandler.removeMessages(MSG_PROGRESS_UPDATE);
         //注销监听器，防止内存泄漏
         unregisterReceiver(mIntentReceiver);
+        mShakeListener.stop();
     }
 }

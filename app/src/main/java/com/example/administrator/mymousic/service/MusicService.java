@@ -133,12 +133,11 @@ public class MusicService extends Service {
         random_a_song();
     }
 
-<<<<<<< HEAD
+
     /**
      * 摇一摇切换随机歌曲
      */
-=======
->>>>>>> 29b6cd3ae00642ff72bb99ae3ac31ef2715ddc09
+
     private void random_a_song() {
         Random rand = new Random();
         int i = rand.nextInt(mPlayList.size());
@@ -312,13 +311,13 @@ public class MusicService extends Service {
 
     }
 
-<<<<<<< HEAD
+
     /**
      * 歌曲的准备
      * @param item
      */
-=======
->>>>>>> 29b6cd3ae00642ff72bb99ae3ac31ef2715ddc09
+
+
     private void prepareToPlay(Music item) {
 
         try {
@@ -330,15 +329,13 @@ public class MusicService extends Service {
         }
     }
 
-<<<<<<< HEAD
     /**
      * 歌曲的播放及更新到桌面小控件
      * @param item
      * @param reload
      */
-=======
 
->>>>>>> 29b6cd3ae00642ff72bb99ae3ac31ef2715ddc09
+
     private void playMusicItem(Music item, boolean reload) {
         if (item == null) {
             return;
@@ -361,13 +358,10 @@ public class MusicService extends Service {
 
     }
 
-<<<<<<< HEAD
     /**
      * 下一首
      */
-=======
-    //
->>>>>>> 29b6cd3ae00642ff72bb99ae3ac31ef2715ddc09
+
     public void playNextInner() {
 
         int currentIndex = mPlayList.indexOf(mCurrentMusicItem);
